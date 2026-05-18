@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Right to Seek Asylum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:      #1a1208;
+  --cream:    #f5f0e8;
+  --sand:     #e8dfc8;
+  --rust:     #b84c2a;
+  --rust-lt:  #d4633d;
+  --gold:     #c8922a;
+  --teal:     #2a6b6b;
+  --teal-lt:  #3d8a8a;
+  --warm-mid: #6b5c42;
+  --card-bg:  #fdfaf4;
+  --shadow:   0 4px 32px rgba(26,18,8,.10);
+  --rad:      12px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.75;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+/* ── GRAIN OVERLAY ───────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 999;
+  opacity: .5;
+}
+
+/* ── HERO ────────────────────────────────────────────────── */
+.hero {
+  min-height: 100svh;
+  background: var(--ink);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 80%, rgba(184,76,42,.22) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 20%, rgba(42,107,107,.18) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, rgba(200,146,42,.08) 0%, transparent 70%);
+}
+
+.hero-kicker {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp .8s .2s forwards;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 8vw, 7rem);
+  font-weight: 900;
+  line-height: 1.05;
+  color: var(--cream);
+  max-width: 14ch;
+  margin: 0 auto .5rem;
+  opacity: 0;
+  animation: fadeUp .8s .4s forwards;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--rust-lt);
+}
+
+.hero-sub {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  font-style: italic;
+  color: rgba(245,240,232,.65);
+  max-width: 52ch;
+  margin: 1rem auto 2.5rem;
+  opacity: 0;
+  animation: fadeUp .8s .6s forwards;
+}
+
+.hero-stat-row {
+  display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeUp .8s .8s forwards;
+}
+
+.hero-stat {
+  text-align: center;
+}
+.hero-stat strong {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+.hero-stat span {
+  font-size: .8rem;
+  color: rgba(245,240,232,.55);
+  letter-spacing: .05em;
+}
+
+.scroll-hint {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  color: rgba(245,240,232,.35);
+  font-size: .75rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  display: flex; flex-direction: column; align-items: center; gap: .5rem;
+  animation: bounce 2s 1.5s infinite;
+}
+.scroll-hint::after {
+  content: '';
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, rgba(245,240,232,.35), transparent);
+}
+
+/* ── BYLINE BANNER ───────────────────────────────────────── */
+.byline-banner {
+  background: var(--sand);
+  border-top: 1px solid rgba(26,18,8,.08);
+  border-bottom: 1px solid rgba(26,18,8,.08);
+  padding: .85rem 1.5rem;
+  text-align: center;
+  font-size: .8rem;
+  letter-spacing: .08em;
+  color: var(--warm-mid);
+  font-weight: 500;
+}
+.byline-banner strong { color: var(--ink); }
+
+/* ── NAV TABS ────────────────────────────────────────────── */
+.nav-sticky {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--ink);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.nav-sticky::-webkit-scrollbar { display: none; }
+
+.nav-tabs {
+  display: flex;
+  min-width: max-content;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.nav-tab {
+  padding: 1rem 1.4rem;
+  font-size: .78rem;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,.45);
+  cursor: pointer;
+  border: none; background: none;
+  border-bottom: 3px solid transparent;
+  transition: color .2s, border-color .2s;
+  white-space: nowrap;
+  position: relative;
+}
+.nav-tab:hover { color: rgba(245,240,232,.8); }
+.nav-tab.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+/* ── MAIN LAYOUT ─────────────────────────────────────────── */
+.main-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ── SECTIONS ────────────────────────────────────────────── */
+.section {
+  display: none;
+  padding: 3.5rem 0 5rem;
+  animation: sectionIn .45s ease;
+}
+.section.active { display: block; }
+
+@keyframes sectionIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SECTION HEADERS ─────────────────────────────────────── */
+.section-eyebrow {
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: .6rem;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  max-width: 18ch;
+}
+
+.section-intro {
+  font-size: 1.1rem;
+  color: var(--warm-mid);
+  max-width: 68ch;
+  line-height: 1.8;
+  margin-bottom: 3rem;
+  border-left: 3px solid var(--gold);
+  padding-left: 1.2rem;
+}
+
+/* ── DIVIDER ─────────────────────────────────────────────── */
+.divider {
+  width: 60px; height: 3px;
+  background: var(--rust);
+  margin: 1.2rem 0 2rem;
+  border-radius: 2px;
+}
+
+/* ── PROSE ───────────────────────────────────────────────── */
+.prose { max-width: 72ch; }
+.prose p { margin-bottom: 1.4rem; color: #3a2e1e; line-height: 1.85; }
+.prose h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 2.5rem 0 .8rem;
+  color: var(--ink);
+}
+.prose h4 {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin: 2rem 0 .5rem;
+}
+
+/* ── PULL QUOTE ──────────────────────────────────────────── */
+.pull-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--teal);
+  border-left: 4px solid var(--teal);
+  padding: 1rem 0 1rem 1.5rem;
+  margin: 2.5rem 0;
+  max-width: 60ch;
+}
+.pull-quote cite {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .8rem;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: .06em;
+  color: var(--warm-mid);
+  margin-top: .6rem;
+}
+
+/* ── STAT CARDS ──────────────────────────────────────────── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.2rem;
+  margin: 2.5rem 0;
+}
+.stat-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(26,18,8,.08);
+  border-radius: var(--rad);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s;
+}
+.stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 40px rgba(26,18,8,.14); }
+.stat-card .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--rust);
+  line-height: 1;
+  margin-bottom: .3rem;
+}
+.stat-card .label { font-size: .85rem; color: var(--warm-mid); font-weight: 400; }
+.stat-card .source { font-size: .7rem; color: rgba(107,92,66,.5); margin-top: .5rem; }
+
+/* ── TWO-COL ─────────────────────────────────────────────── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+  margin: 2rem 0;
+}
+@media (max-width: 700px) { .two-col { grid-template-columns: 1fr; gap: 1.5rem; } }
+
+/* ── ARGUMENT CARDS ──────────────────────────────────────── */
+.arg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+.arg-card {
+  border-radius: var(--rad);
+  padding: 1.8rem;
+  position: relative;
+  overflow: hidden;
+}
+.arg-card.for {
+  background: linear-gradient(135deg, #edf5f5 0%, #f5f9f9 100%);
+  border: 1px solid rgba(42,107,107,.15);
+}
+.arg-card.against {
+  background: linear-gradient(135deg, #fdf2ee 0%, #fef7f5 100%);
+  border: 1px solid rgba(184,76,42,.15);
+}
+.arg-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: .8rem;
+  color: var(--ink);
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.arg-card.for h4::before { content: '✦ '; color: var(--teal); }
+.arg-card.against h4::before { content: '◆ '; color: var(--rust); }
+.arg-card p { font-size: .92rem; color: #4a3c28; line-height: 1.75; margin: 0; }
+.arg-card .tag {
+  display: inline-block;
+  font-size: .65rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .25rem .6rem;
+  border-radius: 20px;
+  margin-bottom: .8rem;
+}
+.arg-card.for .tag { background: rgba(42,107,107,.12); color: var(--teal); }
+.arg-card.against .tag { background: rgba(184,76,42,.12); color: var(--rust); }
+
+/* ── CASE STUDY TABS ─────────────────────────────────────── */
+.case-tabs {
+  display: flex; gap: .5rem; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.case-tab {
+  padding: .55rem 1.2rem;
+  border-radius: 30px;
+  border: 1.5px solid var(--sand);
+  background: transparent;
+  font-size: .82rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--warm-mid);
+  transition: all .2s;
+}
+.case-tab:hover { border-color: var(--rust); color: var(--rust); }
+.case-tab.active {
+  background: var(--rust);
+  border-color: var(--rust);
+  color: white;
+}
+
+.case-panel { display: none; }
+.case-panel.active {
+  display: block;
+  animation: sectionIn .35s ease;
+}
+
+.case-header {
+  display: flex; align-items: flex-start; gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.case-flag {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+  flex-shrink: 0;
+  background: var(--sand);
+}
+.case-meta { flex: 1; }
+.case-meta h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: .2rem;
+}
+.case-meta .case-subtitle {
+  font-size: .8rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--rust);
+  font-weight: 500;
+}
+
+.challenge-list {
+  background: var(--sand);
+  border-radius: var(--rad);
+  padding: 1.2rem 1.5rem;
+  margin-top: 1.5rem;
+}
+.challenge-list h5 {
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--warm-mid);
+  margin-bottom: .8rem;
+}
+.challenge-list ul { list-style: none; }
+.challenge-list li {
+  font-size: .9rem;
+  padding: .3rem 0;
+  color: #4a3c28;
+  display: flex; align-items: flex-start; gap: .5rem;
+}
+.challenge-list li::before { content: '—'; color: var(--rust); flex-shrink: 0; }
+
+/* ── TIMELINE ────────────────────────────────────────────── */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+  margin: 2rem 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--rust), var(--teal));
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 2rem;
+  padding-bottom: .5rem;
+}
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -2.45rem; top: .35rem;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--cream);
+  box-shadow: 0 0 0 2px var(--gold);
+}
+.tl-year {
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: .2rem;
+}
+.tl-text {
+  font-size: .95rem;
+  color: #3a2e1e;
+  line-height: 1.7;
+}
+.tl-text strong { color: var(--ink); }
+
+/* ── LEGAL FRAMEWORK CARDS ───────────────────────────────── */
+.law-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2rem;
+  margin: 2rem 0;
+}
+.law-card {
+  background: var(--card-bg);
+  border-radius: var(--rad);
+  border: 1px solid rgba(26,18,8,.08);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+.law-card .law-year {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: .3rem;
+}
+.law-card h4 {
+  font-weight: 600;
+  font-size: .92rem;
+  margin-bottom: .6rem;
+  color: var(--ink);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.law-card p { font-size: .85rem; color: var(--warm-mid); margin: 0; line-height: 1.7; }
+
+/* ── ACCORDION ───────────────────────────────────────────── */
+.accordion { margin: 1.5rem 0; }
+.acc-item {
+  border-bottom: 1px solid rgba(26,18,8,.1);
+}
+.acc-btn {
+  width: 100%; text-align: left;
+  background: none; border: none;
+  padding: 1.1rem 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ink);
+  transition: color .2s;
+}
+.acc-btn:hover { color: var(--rust); }
+.acc-btn .icon {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--sand);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem;
+  flex-shrink: 0;
+  transition: transform .3s, background .2s;
+}
+.acc-btn.open .icon { transform: rotate(45deg); background: var(--rust); color: white; }
+.acc-content {
+  max-height: 0; overflow: hidden;
+  transition: max-height .4s ease, padding .3s;
+}
+.acc-content.open { max-height: 1000px; }
+.acc-inner {
+  padding: 0 0 1.2rem;
+  font-size: .92rem;
+  color: #4a3c28;
+  line-height: 1.8;
+}
+
+/* ── SYNTHESIS CARDS ─────────────────────────────────────── */
+.synthesis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+.syn-card {
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: var(--rad);
+  padding: 2rem;
+}
+.syn-card .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--gold);
+  opacity: .4;
+  line-height: 1;
+  margin-bottom: .2rem;
+}
+.syn-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: .7rem;
+  color: var(--cream);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.syn-card p { font-size: .88rem; color: rgba(245,240,232,.7); line-height: 1.75; margin: 0; }
+
+/* ── CONCLUSION BANNER ───────────────────────────────────── */
+.conclusion-banner {
+  background: var(--teal);
+  border-radius: var(--rad);
+  padding: 2.5rem;
+  margin: 2rem 0;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.conclusion-banner::before {
+  content: '"';
+  position: absolute; top: -1rem; left: 1.5rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 12rem;
+  color: rgba(255,255,255,.06);
+  line-height: 1;
+  pointer-events: none;
+}
+.conclusion-banner blockquote {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-style: italic;
+  line-height: 1.55;
+  margin-bottom: .8rem;
+  position: relative;
+}
+.conclusion-banner cite {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .8rem;
+  opacity: .7;
+  font-style: normal;
+  letter-spacing: .05em;
+}
+
+/* ── REFERENCES ──────────────────────────────────────────── */
+.ref-list { list-style: none; }
+.ref-list li {
+  font-size: .85rem;
+  color: #4a3c28;
+  padding: .8rem 0;
+  border-bottom: 1px solid rgba(26,18,8,.06);
+  line-height: 1.65;
+}
+.ref-list li:last-child { border-bottom: none; }
+.ref-list a { color: var(--teal); text-decoration: underline; word-break: break-all; }
+.ref-list a:hover { color: var(--rust); }
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+footer {
+  background: var(--ink);
+  color: rgba(245,240,232,.45);
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  font-size: .8rem;
+  line-height: 1.8;
+}
+footer strong { color: var(--gold); }
+
+/* ── ANIMATIONS ──────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .hero h1 { font-size: 2.8rem; }
+  .hero-stat-row { gap: 1.5rem; }
+  .section { padding: 2.5rem 0 3.5rem; }
+  .section-title { font-size: 2rem; }
+  .arg-grid { grid-template-columns: 1fr; }
+  .synthesis-grid { grid-template-columns: 1fr; }
+}
+
+/* ── HIGHLIGHT BOX ───────────────────────────────────────── */
+.highlight-box {
+  background: linear-gradient(135deg, #fdf6e8 0%, #fef9f0 100%);
+  border: 1.5px solid rgba(200,146,42,.25);
+  border-radius: var(--rad);
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+.highlight-box p { margin: 0; font-size: .95rem; color: #4a3c28; }
+.highlight-box strong { color: var(--ink); }
+
+/* progress bar top */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: linear-gradient(to right, var(--rust), var(--gold));
+  z-index: 200;
+  width: 0%;
+  transition: width .1s linear;
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- ── HERO ──────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <p class="hero-kicker">Public Policy &amp; Systems — Final Project</p>
+  <h1>The Right to Seek <em>Asylum</em></h1>
+  <p class="hero-sub">A critical examination of international law, human rights, and state sovereignty</p>
+
+  <div class="hero-stat-row">
+    <div class="hero-stat">
+      <strong>123.2M</strong>
+      <span>forcibly displaced<br>worldwide, end 2024</span>
+    </div>
+    <div class="hero-stat">
+      <strong>1 in 67</strong>
+      <span>people on Earth<br>is displaced</span>
+    </div>
+    <div class="hero-stat">
+      <strong>149</strong>
+      <span>states party to<br>the 1951 Convention</span>
+    </div>
+    <div class="hero-stat">
+      <strong>71%</strong>
+      <span>of refugees hosted by<br>low-income countries</span>
+    </div>
+  </div>
+
+  <div class="scroll-hint">Explore</div>
+</section>
+
+<!-- ── BYLINE ─────────────────────────────────────────────── -->
+<div class="byline-banner">
+  <strong>Vedika Malhotra</strong> (24023471) &nbsp;·&nbsp;
+  <strong>Anica Bajju</strong> (24023454) &nbsp;·&nbsp;
+  <strong>Akshata Nakarmi</strong> (24023455)
+</div>
+
+<!-- ── STICKY NAV ─────────────────────────────────────────── -->
+<nav class="nav-sticky" aria-label="Page sections">
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-section="intro">Introduction</button>
+    <button class="nav-tab" data-section="history">History</button>
+    <button class="nav-tab" data-section="law">International Law</button>
+    <button class="nav-tab" data-section="cases">Case Studies</button>
+    <button class="nav-tab" data-section="for">Arguments For</button>
+    <button class="nav-tab" data-section="against">Arguments Against</button>
+    <button class="nav-tab" data-section="synthesis">Policy Synthesis</button>
+    <button class="nav-tab" data-section="conclusion">Conclusion</button>
+    <button class="nav-tab" data-section="refs">References</button>
+  </div>
+</nav>
+
+<!-- ── MAIN ───────────────────────────────────────────────── -->
+<main class="main-container">
+
+  <!-- INTRODUCTION -->
+  <section id="intro" class="section active">
+    <p class="section-eyebrow">Section 01</p>
+    <h2 class="section-title">What Is Asylum?</h2>
+    <div class="divider"></div>
+    <div class="prose">
+      <p>The word asylum is the Latin counterpart of the Greek word <em>asylon</em>, which means freedom from seizure. Historically, asylum has been regarded as a place of refuge where one could be free from the reach of a pursuer. Sacred places first provided such a refuge and scholars are of the view that the practice of asylum is as old as humanity itself (Boed, 1994).</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="num">123.2M</div>
+        <div class="label">People forcibly displaced worldwide at end of 2024 due to persecution, conflict, violence and human rights violations</div>
+        <div class="source">UNHCR Global Trends 2024</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">1 in 67</div>
+        <div class="label">People on Earth are forcibly displaced — equivalent to the entire population of some nations</div>
+        <div class="source">UNHCR Global Trends 2024</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">8.3M+</div>
+        <div class="label">Asylum-seekers whose international protection claims were still pending at the end of 2024</div>
+        <div class="source">UNHCR Global Trends 2024</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">2×</div>
+        <div class="label">Displacement has doubled in a decade — from ~3.2M asylum seekers in 2015 to 8.3M in 2024</div>
+        <div class="source">UNHCR 2024</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>At the global level, Article 14 of the Universal Declaration of Human Rights (UDHR) recognizes the right to seek and enjoy asylum from persecution. The 1951 Refugee Convention and its 1967 Protocol serve as the foundation of asylum law, defining who is considered a refugee and outlining nations' duty to protect them. Yet this framework doesn't guarantee a right to be granted asylum. States still retain powers over admission of asylum-seekers. And, thus, the gap between the legal aspiration and reality is vast.</p>
+
+      <p>The right to seek asylum is an umbrella term which includes three distinct components:</p>
+    </div>
+
+    <div class="arg-grid">
+      <div class="arg-card for">
+        <span class="tag">Component 1</span>
+        <h4>Right of a State to Grant Asylum</h4>
+        <p>Every sovereign state has exclusive control over its territory and hence over persons present in the state. The state has the right to grant or deny asylum. Traditionally, the right to asylum has been viewed as a right of the state, not of the individual.</p>
+      </div>
+      <div class="arg-card for">
+        <span class="tag">Component 2</span>
+        <h4>Right of an Individual to Seek Asylum</h4>
+        <p>This is an individual right stating that a person can leave their place of residence to seek asylum. Article 13 of the Universal Declaration of Rights states that "everyone has the right to leave any country, including his own."</p>
+      </div>
+      <div class="arg-card against">
+        <span class="tag">Component 3 — Most Contested</span>
+        <h4>Right of an Individual to Be Granted Asylum</h4>
+        <p>A person does not have a guaranteed legal right to be granted asylum. It remains the choice of the country. The international community is yet to agree on a unanimous law to make asylum compulsory. Article 14 UDHR merely states the right to <em>seek</em> asylum, not to receive it.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>Governments are often motivated by self-interest rather than considering humanity</strong> — and this makes the implementation and requirement of the Right to Seek Asylum more necessary.</p>
+    </div>
+  </section>
+
+  <!-- HISTORY -->
+  <section id="history" class="section">
+    <p class="section-eyebrow">Section 02</p>
+    <h2 class="section-title">Historical Background</h2>
+    <div class="divider"></div>
+    <p class="section-intro">The practice of giving asylum was originally a religious obligation, common to many religions. The sanctity of the temple or church provided a sanctuary from manmade jurisdiction. As the notion of state sovereignty grew, the power to grant asylum shifted from religious institutions to nation-states.</p>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:1.5rem;">Ancient &amp; Pre-Modern Traditions</h3>
+
+    <div class="accordion">
+      <div class="acc-item">
+        <button class="acc-btn" data-acc="israel">
+          <span>⚔️ &nbsp;Ancient Israel &amp; Judah — Cities of Refuge</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="acc-content">
+          <div class="acc-inner">In the ancient Israel and Judah, the Cities of Refuge were certain towns in which the perpetrators of accidental manslaughter could claim the right of asylum, though he would still have to stand trial. Blood vengeance against such perpetrators was allowed by law outside these cities.</div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" data-acc="greece">
+          <span>🏛️ &nbsp;Ancient Greece — Asylia</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="acc-content">
+          <div class="acc-inner">In ancient Greece, the temples, altars and sacred groves and statues of the gods possessed the privileges of protecting slaves, debtors, and criminals who fled for refuge. The law did not recognise the right of all sacred places to afford protection. It was limited to certain temples or altars which were considered to have <em>asylia</em> — literally, the inviolability of a person in a sacred space. It would appear that all sacred places were supposed to protect an individual to a certain extent even if their right to do so was not clearly defined by the state. In such cases, it was considered lawful to use any means to compel the individuals who had taken refuge to leave the sanctuary.</div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" data-acc="rome">
+          <span>🏟️ &nbsp;Ancient Rome — Temple of Asylaeus</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="acc-content">
+          <div class="acc-inner">In ancient Rome, the asylum was the temple of the god Asylaeus that Romulus is said to have opened at Rome in order to increase the population of the city. It was a place of refuge for inhabitants of other states, rather than a sanctuary for those who had violated the laws of the city. In the early imperial times, the right to asylum does not appear to have been recognized by Roman Law. By a constitution of Antoninus Pius, it was decreed that if a slave fled their master to the temples of gods to avoid ill-usage, the praeses could compel the master to sell the slave and the slave would not be regarded as a runaway.</div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" data-acc="hawaii">
+          <span>🌺 &nbsp;Ancient Hawaii — Pu'uhonua</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="acc-content">
+          <div class="acc-inner">In ancient Hawaii, certain places were designated as <em>pu'uhonua</em> which means "place of refuge." A person who had violated the strict kapu code, or a defeated warrior or a non-combatant in a war could take shelter there, free from reprisal. Anyone could enter there no matter what their social status or crime. The priests would put to death anyone who would pursue someone into the sanctuary. After the purification process by the priest, the person was free to leave.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top:2.5rem;">
+      <p>After the <strong>Peace of Westphalia in 1648</strong>, the emergence of the modern state system reordered the relationship between territorial sovereignty and the movement of people. As states gained control over their borders, the idea of offering refuge came into tension with the right to exclude foreigners. By the 19th century, European states developed diplomatic asylum practices, shielding rebels from neighbouring monarchies — but these were subject to the discretion of the state rather than legal obligation.</p>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin:2.5rem 0 1.2rem;">The Interwar Crisis &amp; Hannah Arendt</h3>
+
+    <div class="two-col">
+      <div class="prose">
+        <p>World War I led to catastrophic displacement. There is little consensus on the actual number displaced, but <strong>more than 9 million were internally displaced persons and more than 3 million were refugees</strong> (Spiegel &amp; Golub, 2014). These numbers exposed the structural weakness of the nation-state systems.</p>
+        <p>Massive numbers of people fled their homes as a result of the fall of the multiethnic Habsburg, Romanov, and Ottoman Empires as well as the extreme bloodshed of the Russian Revolution. When the European map was redrawn in 1919, many of the countries the refugees had left had disappeared. Almost <strong>10 million persons lost their citizenship</strong>. The political agenda became heavily influenced by these stateless refugees (Lettevall, 2012).</p>
+        <p>The immediate response to the interwar crisis was the creation of the <strong>League of Nations High Commissioner for Refugees in 1921</strong> under Fridtjof Nansen. His 'Nansen Passport' provided the international travel document for stateless persons. This was followed by the Convention Relating to the International Status of Refugees (1933), which included the first expression of non-refoulement.</p>
+      </div>
+      <div>
+        <div class="pull-quote">
+          "A right to have rights — the right to belong to some kind of organized community."
+          <cite>— Hannah Arendt, <em>Origins of Totalitarianism</em>, 1951</cite>
+        </div>
+        <div class="prose">
+          <p>Hannah Arendt, a stateless refugee from Nazi Germany from 1933, began with an article entitled "We Refugees," published in 1943. She argued that the supposedly inalienable human rights were only realizable through citizenship — and those stripped of citizenship were, paradoxically, left with no rights at all.</p>
+          <p>Arendt anticipated that <em>"refugees have become a major issue of our time; a test for the nation-states as well as for human rights"</em> (Mahrdt, 2017). Without membership in a legal community, asylum-seekers and refugees were reduced to 'the abstract nakedness of being human' — physically alive but politically invisible, dependent on charity rather than their own rights.</p>
+          <p>In <em>Rightlessness in an Age of Rights</em>, Ayten Gündoğdu argues that today's asylum seekers are "formally" protected by human rights laws, but in practice are subject to detention, deportation and exclusion — recreating the conditions Arendt described.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERNATIONAL LAW -->
+  <section id="law" class="section">
+    <p class="section-eyebrow">Section 03</p>
+    <h2 class="section-title">International Asylum Law</h2>
+    <div class="divider"></div>
+    <p class="section-intro" style="border-left-color:var(--teal);">"The practice of asylum is as old as humanity itself."</p>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.2rem;">Key Legal Instruments</h3>
+    <div class="law-grid">
+      <div class="law-card">
+        <div class="law-year">1948</div>
+        <h4>Universal Declaration of Human Rights — Article 14</h4>
+        <p>Every person has the right to seek shelter in another country if they are being persecuted. The UDHR has been translated into over 500 languages and drafted by individuals from different cultural and legal backgrounds.</p>
+      </div>
+      <div class="law-card">
+        <div class="law-year">1951</div>
+        <h4>Convention Relating to the Status of Refugees</h4>
+        <p>Defines who a refugee is, the rights of refugees, and the duties of states. As of 2024, 149 countries are party to the 1951 Convention and/or its 1967 Protocol — the key legal basis for UNHCR's work.</p>
+      </div>
+      <div class="law-card">
+        <div class="law-year">1967</div>
+        <h4>1967 Protocol</h4>
+        <p>The 1967 UN Declaration on Territorial Asylum explained that if a country gives asylum to a person, other countries must respect that decision. It removed the temporal and geographic limitations of the 1951 Convention.</p>
+      </div>
+      <div class="law-card">
+        <div class="law-year">1969</div>
+        <h4>OAU Convention (Africa)</h4>
+        <p>Extended refugee status to individuals forced to leave due to 'external aggression, occupation, foreign domination or events seriously disturbing public order' — going beyond the 1951 Convention's scope.</p>
+      </div>
+      <div class="law-card">
+        <div class="law-year">1984</div>
+        <h4>Cartagena Declaration (Latin America)</h4>
+        <p>Adopted by fifteen countries in Latin America. Included 'massive violations of human rights' as a ground for refugee protection, adapting the framework to regional realities.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin:2.5rem 0 1rem;">Non-Refoulement</h3>
+
+    <div class="conclusion-banner" style="background:var(--teal);">
+      <blockquote>No country should send a person back to their country if they could face torture, serious risk or irreversible harm in their own country.</blockquote>
+      <cite>The Principle of Non-Refoulement — Article 33, 1951 Refugee Convention</cite>
+    </div>
+
+    <div class="prose">
+      <p>The principle of non-refoulement was formally compiled in Article 33 of the 1951 Convention. The OHCHR has recognised the principle as binding on all states <em>'irrespective of their citizenship, nationality, statelessness, or migration status, and it applies wherever a State exercises jurisdiction or effective control, even when outside of that State's territory'</em> (OHCHR, 2018).</p>
+      <p>UNHCR notes that refugee status is <strong>"declaratory"</strong> — an individual becomes a refugee by the virtue of their circumstances, not as a result of a state's decision to recognise them. This means that even before formal recognition, asylum seekers are entitled to non-refoulement protection.</p>
+      <p>Article 33(2) permits limited exceptions where the asylum seeker presents danger to the society or is convicted of a serious crime.</p>
+      <p>In the landmark case of <strong>Hirsi Jamaa and Others v. Italy (2012)</strong>, the European Court of Human Rights found Italy guilty for violating the European Convention by intercepting Somali and Eritrean migrants in international waters and returning them to Libya without proper assessment (Border Violence Monitoring Network, n.d.). This shows that legal obligations are not merely theoretical — countries can be held accountable if they violate them.</p>
+    </div>
+  </section>
+
+  <!-- CASE STUDIES -->
+  <section id="cases" class="section">
+    <p class="section-eyebrow">Section 04</p>
+    <h2 class="section-title">Case Studies</h2>
+    <div class="divider"></div>
+
+    <div class="conclusion-banner" style="background:var(--ink);margin-bottom:2rem;">
+      <blockquote>"Is there a dream bigger than going home?"</blockquote>
+      <cite>— A child displaced by war</cite>
+    </div>
+
+    <div class="prose" style="margin-bottom:2rem;">
+      <p>Seeking asylum doesn't just happen across borders but at times within their own countries too. When push comes to shove, seeking asylum turns into a necessity — not merely a choice, but an act of survival. To understand these grey areas where gaps exist between principle, implementation and practice, it is crucial to analyze real world situations where everyday individuals are forced to flee their homes with the aim of survival.</p>
+    </div>
+
+    <div class="case-tabs">
+      <button class="case-tab active" data-case="sudan">🇸🇩 Sudan</button>
+      <button class="case-tab" data-case="myanmar">🇲🇲 Myanmar</button>
+      <button class="case-tab" data-case="yemen">🇾🇪 Yemen</button>
+    </div>
+
+    <!-- Sudan -->
+    <div class="case-panel active" id="case-sudan">
+      <div class="case-header">
+        <div class="case-flag">🇸🇩</div>
+        <div class="case-meta">
+          <h3>Sudan</h3>
+          <div class="case-subtitle">Civil War · 2023 – Present</div>
+        </div>
+      </div>
+      <div class="prose">
+        <p>Sudan has had a long history of political instability, regional conflicts and military coups alongside the presence of armed militias such as Janjaweed. After the removal of the longtime dictator Omar al-Bashir in 2019, Sudan found itself in a vulnerable state where a civilian military transitional government was in the making.</p>
+        <p>This transition was disrupted by a military coup in 2021 which shattered the thin layer of hope civilians had of a democratic government. By April 2023, the situation between the Rapid Support Forces (RSF) and the Sudanese Armed Forces (SAF) escalated into a major armed conflict regarding dispute over military and state control. The struggle over control and power soon escalated into a widespread civil war.</p>
+        <p>Politically conflicted areas, namely Darfur and Khartoum, have been historically marginalized. Darfur is a site marked by long standing conflict, instability, political issues and ethnic tensions. Competition over limited resources like land and water have grown over time, leading to violent confrontations. Militias such as Janjaweed have further escalated these local conflicts on a larger scale, causing a humanitarian crisis.</p>
+        <p>Citizens are facing violence regardless of their personal circumstances. Force is being used against civilians without clearly distinguishing between military targets and civilians — a clear breach of international law. Civilians have been subjected to attacks including airstrikes, targeted attacks, looting, as well as sexual violence. There is no infrastructure left, no government, no safety to go to for help, both in terms of shelter and nutrition.</p>
+        <p>In these contexts, the right to seek asylum becomes crucial. However, the host countries — usually South Sudan, Chad, and Egypt — have their own economic as well as political challenges making it difficult even for them to accommodate refugees.</p>
+      </div>
+      <div class="challenge-list">
+        <h5>Key Asylum Challenges in Sudan</h5>
+        <ul>
+          <li>Host countries (South Sudan, Chad, Egypt) face their own resource and political constraints</li>
+          <li>Destruction of civil infrastructure leaves millions without food, shelter or medical care</li>
+          <li>The legal right to asylum exists but meaningful protection is uncertain</li>
+          <li>Long history of ethnic tensions in Darfur complicates identification of persecution grounds</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Myanmar -->
+    <div class="case-panel" id="case-myanmar">
+      <div class="case-header">
+        <div class="case-flag">🇲🇲</div>
+        <div class="case-meta">
+          <h3>Myanmar — Rohingya Crisis</h3>
+          <div class="case-subtitle">Persecution &amp; Statelessness · Ongoing</div>
+        </div>
+      </div>
+      <div class="prose">
+        <p>While Sudan focuses on the impact of state collapse, the situation in Myanmar highlights how persecution can end up in displacement. Rohingyas are a Muslim minority group in Myanmar's Rakhine State. The minority have faced decades of discrimination and unfair treatment. Under the Citizenship Law of 1982, the Rohingyas are explicitly excluded and have been stateless ever since.</p>
+        <p>This gave rise to the Rohingyas lacking basic human rights such as access to education, healthcare, and freedom of movement. The government of Myanmar does not recognize the Rohingya as a legitimate ethnic group, claiming that they are "illegal immigrants" from Bangladesh, despite many Rohingyas living in Myanmar for generations.</p>
+        <p>The situation majorly escalated in 2016–2017 when Myanmar's military unleashed a brutal attack on Rohingya communities. These operations involved human rights violations, violence including sexual and physical violence, and destruction of residential areas. The United Nations described these actions as a <strong>"textbook example of ethnic cleansing"</strong>.</p>
+        <p>As a result, many Rohingya were forced to flee to Bangladesh. As of the current time, those who fled now reside in overcrowded refugee camps such as Cox's Bazar — with unavailability of basic things such as education, resources, and employment. The situation further escalated after the military coup in 2021, making it harder for vulnerable minorities such as the Rohingya.</p>
+        <p>This case highlights a different aspect of asylum: <em>protection from persecution based on identity</em>. It also highlights the limitations of the current asylum system in addressing statelessness, as individuals without citizenship face more barriers than others while trying to seek protection.</p>
+      </div>
+      <div class="challenge-list">
+        <h5>Key Asylum Challenges — Rohingya</h5>
+        <ul>
+          <li>Statelessness under Myanmar's 1982 Citizenship Law creates a fundamental legal barrier</li>
+          <li>Overcrowded camps in Cox's Bazar lack education, employment and basic resources</li>
+          <li>Country of persecution denies their ethnic identity entirely</li>
+          <li>Military coup of 2021 reinforced marginalization of minority communities</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Yemen -->
+    <div class="case-panel" id="case-yemen">
+      <div class="case-header">
+        <div class="case-flag">🇾🇪</div>
+        <div class="case-meta">
+          <h3>Yemen</h3>
+          <div class="case-subtitle">Proxy War &amp; Humanitarian Collapse · 2014 – Present</div>
+        </div>
+      </div>
+      <div class="prose">
+        <p>The crisis in Yemen represents yet another aspect of forced displacement. A political crisis in 2011 soon turned into a full-fledged civil war. In 2014, the Houthi movement — a non-state armed group from northern Yemen — took control over Sana'a, the capital, resulting in effective displacement of the government.</p>
+        <p>This was further escalated when Saudi Arabia intervened to restore the original Yemeni government. The conflict quickly turned into a proxy war with Iran, believed to be supporting the Houthis. This resulted in Yemen turning into a battleground for competing regional interests.</p>
+        <p>The crisis in Yemen is widely described as one of the world's worst humanitarian crises, where millions of people lack basic necessities such as healthcare, nutrition, and shelter. Violence such as blockades and airstrikes have destroyed important infrastructure, leaving citizens in an extremely vulnerable position. The situation escalated further due to the Red Sea crisis, where Houthi attacks on shipping routes triggered military responses from the UK and USA, increasing instability.</p>
+        <p>For the people of Yemen, displacement is caused not only by violence but by the destruction of basic infrastructure crucial for survival. Millions are forced to leave in search of basic medical care, food and shelter. However, Yemen's geographical and political context hinders the ability of refugees to seek asylum abroad, resulting in an extremely high number of internally displaced people.</p>
+        <p>The case of Yemen shows how modern conflicts involving multiple international actors can create long-standing crises with no clear resolution — and raises crucial questions about the responsibility of the international community in addressing the root causes of displacement.</p>
+      </div>
+      <div class="challenge-list">
+        <h5>Key Asylum Challenges — Yemen</h5>
+        <ul>
+          <li>Geographical and political context blocks access to international asylum channels</li>
+          <li>Proxy war dynamic means no single state bears clear responsibility</li>
+          <li>Destroyed infrastructure forces displacement driven by basic survival needs, not just violence</li>
+          <li>High rate of internal displacement makes formal asylum claims nearly impossible</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top:2.5rem;">
+      <p>All three cases, while differing in their origins, share one common thread: <strong>displacement on a large scale and an urgent need for stable and reliable asylum.</strong> They reveal inconsistencies in how asylum is granted and managed. The right to seek asylum is fundamental — yet the reality is shaped by where individuals come from and where they seek refuge.</p>
+    </div>
+  </section>
+
+  <!-- ARGUMENTS FOR -->
+  <section id="for" class="section">
+    <p class="section-eyebrow">Section 05</p>
+    <h2 class="section-title">Arguments in Favour</h2>
+    <div class="divider"></div>
+    <p class="section-intro" style="border-left-color:var(--teal);">The case for a robust right to seek asylum rests on moral foundations, binding legal commitments, historical accountability, and empirical evidence that refugees are contributors rather than burdens.</p>
+
+    <div class="arg-grid">
+      <div class="arg-card for">
+        <span class="tag">Moral Foundation</span>
+        <h4>Human Dignity &amp; The Right to Have Rights</h4>
+        <p>Borders have guards and the guards have weapons. To Africans in small, leaky vessels seeking to cross the Mediterranean, borders mean exclusion. Most of the people trying to get in are ordinary people seeking an opportunity to build decent, secure lives for themselves and their families. The question is: on what moral ground can the guards deny entry to these people? (Carens, 2013).</p>
+      </div>
+      <div class="arg-card for">
+        <span class="tag">Legal Obligation</span>
+        <h4>What States Have Already Committed To</h4>
+        <p>Countries which signed the 1951 Refugee Convention are legally bound to the rule of non-refoulement. The ICRC has clearly stated that non-refoulement applies in many contexts including interception at land or sea, rescue at sea, and rejection or pushback at the border. Countries can and have been held accountable for violations.</p>
+      </div>
+      <div class="arg-card for">
+        <span class="tag">Historical Responsibility</span>
+        <h4>Moral Debt Argument</h4>
+        <p>Rich countries' unwillingness to accept asylum seekers must be seen in the context of their past actions. Displacement crises in Afghanistan, Iraq, South Sudan, Syria and Libya have all been influenced by colonial rule, Cold War conflicts, and military interventions. Granting asylum is not just kindness — it is moral responsibility.</p>
+      </div>
+      <div class="arg-card for">
+        <span class="tag">Empirical Evidence</span>
+        <h4>Refugees as Contributors, Not a Burden</h4>
+        <p>Studies from Germany, Sweden, Canada, and the United States show that over 5 to 10 years, refugees contribute positively to host economies through labour market participation, tax revenue, and entrepreneurship. Countries that process asylum applications quickly and allow asylum seekers to work early have much better integration results (Migration Policy Institute, 2024).</p>
+      </div>
+      <div class="arg-card for">
+        <span class="tag">Structural Justice</span>
+        <h4>Inequality in the Current System</h4>
+        <p>71% of the world's refugees are hosted by low- and middle-income countries. Türkiye hosts 2.7 million refugees. Pakistan and Iran shelter about 5 million Afghans. Uganda — with a per capita income a fraction of Germany's — hosts one million refugees. This reflects a failure in the equal distribution of international burden-sharing (UNHCR, 2024).</p>
+      </div>
+    </div>
+
+    <div class="pull-quote">
+      "The strongest argument for the right to seek asylum is the conception of human dignity which is far greater than citizenship. When a person is expelled from or unable to return to their own country, they are stripped not just of comfort but of the basic conditions of a dignified human life."
+      <cite>— Drawing on Hannah Arendt &amp; Joseph Carens (2013)</cite>
+    </div>
+
+    <div class="highlight-box">
+      <p>Many rich countries are currently facing problems like ageing populations and declining birth rates. <strong>Refugees, who are comparatively younger than the host population and have high aspirations for education and work, can potentially prove to be a demographic dividend if they are integrated effectively.</strong> However, this does not mean that refugees should only be accepted for economic benefits. The main reason for giving asylum must remain human rights.</p>
+    </div>
+  </section>
+
+  <!-- ARGUMENTS AGAINST -->
+  <section id="against" class="section">
+    <p class="section-eyebrow">Section 06</p>
+    <h2 class="section-title">Arguments Against</h2>
+    <div class="divider"></div>
+    <p class="section-intro" style="border-left-color:var(--rust);">The critique of an expansive right to asylum rests on concerns about sovereignty, security, capacity, and the integrity of the refugee system. These arguments deserve serious engagement rather than dismissal.</p>
+
+    <div class="arg-grid">
+      <div class="arg-card against">
+        <span class="tag">State Sovereignty</span>
+        <h4>The Right to Control Borders</h4>
+        <p>Every country has the right to grant asylum — it remains the country's choice. If a country cannot control who enters the state, it raises questions about its ability to maintain social cohesion, manage public services, and maintain political support. In Germany in 2015, allowing over 1 million refugees led to public backlash and support shifting to the Alternative for Germany party.</p>
+      </div>
+      <div class="arg-card against">
+        <span class="tag">National Security</span>
+        <h4>The Security Concern</h4>
+        <p>Large flows of asylum seekers during a short period can create vulnerabilities in national security. Individuals with criminal activity or terrorist intent may infiltrate the country, while screening becomes increasingly difficult during periods of mass movement. Although the 1951 Convention contains exclusion clauses, documentation from conflict zones may be destroyed, making background checks nearly impossible.</p>
+      </div>
+      <div class="arg-card against">
+        <span class="tag">Economic Capacity</span>
+        <h4>The Burden on Host Countries</h4>
+        <p>Many refugees arrive simultaneously, leading to immense pressure on the host country's resources. Many citizens criticise that investing resources in newcomers is unfair while lower-income citizens compete for the same resources — raising the question of what it means to be a citizen. Questions have been raised on whether asylum seekers are "gaming the system" or taking "more than their fair share" (Banulescu-Bogdan, 2022).</p>
+      </div>
+      <div class="arg-card against">
+        <span class="tag">Asylum Shopping</span>
+        <h4>Safe Third Country Principle</h4>
+        <p>Asylum shopping refers to the situation where refugees bypass a safe country to move to a wealthier country with a more generous welfare system. Under the "Safe Third Country" rule, if an asylum seeker passes through a safe country, they are expected to take asylum there first. A person who enters the EU through Greece cannot simply proceed to Germany to claim asylum.</p>
+      </div>
+      <div class="arg-card against">
+        <span class="tag">Definition Problems</span>
+        <h4>Refugees vs. Economic Migrants</h4>
+        <p>It becomes difficult to clarify the difference between individuals genuinely fleeing turbulent situations and those who have entered a country for better material conditions. A Sri Lankan fleeing rising sea levels or a Bangladeshi fleeing gang violence may not fall under the ambit of a refugee according to existing treaties — yet their need for protection is still real. The distinction is complex.</p>
+      </div>
+    </div>
+
+    <div class="pull-quote" style="border-left-color:var(--rust);color:var(--rust);">
+      "Interdependence sovereignty means that a state has the right to regulate persons across its borders — a right of an independent state that historically precedes the modern human rights regime."
+      <cite>— Sovereignty argument, drawing on Krasner (1988)</cite>
+    </div>
+  </section>
+
+  <!-- POLICY SYNTHESIS -->
+  <section id="synthesis" class="section">
+    <p class="section-eyebrow">Section 07</p>
+    <h2 class="section-title">Policy Synthesis</h2>
+    <div class="divider"></div>
+    <p class="section-intro">The current asylum system remains inadequate in the face of the global scenario, with ongoing conflicts on almost every continent. Millions are getting displaced and unable to find a home.</p>
+
+    <div class="synthesis-grid">
+      <div class="syn-card">
+        <div class="num">01</div>
+        <h4>Inequitable Burden Distribution</h4>
+        <p>The countries made to bear the greatest burden of refugee protection are those with the fewest resources. 71% of the world's refugees are hosted by low- and middle-income countries. Almost 2 million refugees returned to their countries of origin during the first half of 2025 — but millions remain in protracted displacement.</p>
+      </div>
+      <div class="syn-card">
+        <div class="num">02</div>
+        <h4>Legal Limbo &amp; Definitional Gaps</h4>
+        <p>Various individuals facing threats due to gang violence or climate change may remain trapped in legal limbo. The terminologies, duties and rights surrounding refugees were designed during a wartime context — applicable in some situations, but unable to accommodate all individuals displaced by factors not under their control.</p>
+      </div>
+      <div class="syn-card">
+        <div class="num">03</div>
+        <h4>Procedural Injustice</h4>
+        <p>Asylum seekers wait for long periods to gain refugee status. Two asylum seekers with identical circumstances but in different countries can go through entirely different processes and outcomes. They may be held in detention to discourage other migrants — facing not only legal distress but social backlash and discrimination.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <p>The matter of national security and the problems in conducting background checks of refugees can be acknowledged. However, <strong>the moral weight of a person's life compared to a state's sovereignty, just to control who moves through the borders, remains deeply questionable.</strong></p>
+    </div>
+
+    <div class="prose" style="margin-top:2rem;">
+      <p>Reform proposals in the literature range from Carens's ideal of open borders — which he acknowledges is not immediately realisable — to more modest but practicable proposals for expanding legal pathways, improving burden-sharing mechanisms, and reforming the refugee definition. Hathaway and Neve's burden-sharing models and UNHCR's advocacy for expanded resettlement quotas represent steps toward systemic reform.</p>
+      <p>The critical question is whether the political will exists in high-income states to move beyond purely restrictive responses to asylum and engage with the structural drivers of displacement.</p>
+    </div>
+  </section>
+
+  <!-- CONCLUSION -->
+  <section id="conclusion" class="section">
+    <p class="section-eyebrow">Section 08</p>
+    <h2 class="section-title">Conclusion</h2>
+    <div class="divider"></div>
+
+    <div class="conclusion-banner">
+      <blockquote>"No one leaves their home unless home is the mouth of a shark."</blockquote>
+      <cite>— Warsan Shire, <em>Home</em></cite>
+    </div>
+
+    <div class="prose">
+      <p>The idea of seeking asylum has been rooted in our ancient history. People have been seeking asylum in holy places or religious places throughout history. After the horrors witnessed during the Holocaust, countries finally came together to form international laws. With the principle of non-refoulement, a solid legal foundation including the 1951 Refugee Convention alongside regional instruments, 149 countries have committed to uphold the laws supporting the right to seek asylum.</p>
+      <p>However, the laws surrounding the right to seek asylum do have genuine concerns regarding state sovereignty, national security, and the pressure on host countries' resources. Nevertheless, none of these concerns can stand against the violation of the rights of asylum seekers, nor the case of morality. Most of these asylum seekers are running from life-threatening situations. Having no place to live while getting stuck in legalities is against humanity itself.</p>
+      <p>The processes related to the asylum-seeking process must be more legally efficient, while the responsibilities must be distributed equitably.</p>
+    </div>
+
+    <div class="pull-quote">
+      "The right to asylum recognizes that the circumstances of one's birth should not decide whether a person gets to live or die. The principle is our collective response to persecution, violence and terrorism around the world and how we choose to display our humanity towards those who are stuck in these situations with nowhere else to go."
+    </div>
+
+    <div class="prose">
+      <p>The right to asylum provides a new chance at life to those who believe that they have lost everything. Until the implementation of asylum law properly addresses both the causes of displacement and bridges the gap in the asylum system, the dream of going home — and the dream of safety — continues to remain out of reach for millions.</p>
+    </div>
+
+    <div class="stat-grid" style="margin-top:2.5rem;">
+      <div class="stat-card">
+        <div class="num">1951</div>
+        <div class="label">The year the Refugee Convention was adopted, forming the legal backbone of asylum protection worldwide</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">149</div>
+        <div class="label">States party to either the 1951 Convention and/or its 1967 Protocol, committing to refugee protection</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">73%</div>
+        <div class="label">Of the world's refugees hosted in low- and middle-income countries, despite wealthy nations' capacity</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REFERENCES -->
+  <section id="refs" class="section">
+    <p class="section-eyebrow">Section 09</p>
+    <h2 class="section-title">References</h2>
+    <div class="divider"></div>
+    <p style="font-size:.85rem;color:var(--warm-mid);margin-bottom:1.5rem;">All references in APA 7th Edition format.</p>
+
+    <ul class="ref-list">
+      <li>Amnesty International. (n.d.). <em>Refugees, asylum seekers and migrants.</em> Amnesty International. <a href="https://www.amnesty.org/en/what-we-do/refugees-asylum-seekers-and-migrants/" target="_blank">https://www.amnesty.org/en/what-we-do/refugees-asylum-seekers-and-migrants/</a></li>
+
+      <li>Arendt, H. (1943). <em>We refugees</em> [Archival document]. Internet Archive. <a href="https://dn710601.ca.archive.org/0/items/hannah_arendt_we_refugees/hannah_arendt_we_refugees_text.pdf" target="_blank">https://dn710601.ca.archive.org/0/items/hannah_arendt_we_refugees/hannah_arendt_we_refugees_text.pdf</a></li>
+
+      <li>Asylum (antiquity). (n.d.). In <em>Wikipedia.</em> Retrieved May 8, 2026, from <a href="https://en.wikipedia.org/wiki/Asylum_(antiquity)" target="_blank">https://en.wikipedia.org/wiki/Asylum_(antiquity)</a></li>
+
+      <li>Asylum Insight. (n.d.). <em>History of asylum.</em> <a href="https://www.asyluminsight.com/history-of-asylum" target="_blank">https://www.asyluminsight.com/history-of-asylum</a></li>
+
+      <li>Banulescu-Bogdan, N. (2022). <em>From fear to solidarity: The difficulty in shifting public narratives about refugees.</em> Migration Policy Institute. <a href="https://www.migrationpolicy.org/sites/default/files/publications/refugee-narratives-report-2022_final.pdf" target="_blank">Migration Policy Institute PDF</a></li>
+
+      <li>Boed, R. (1994). The state of the right of asylum in international law. <em>Duke Journal of Comparative &amp; International Law, 5</em>(1), 1–34. <a href="https://scholarship.law.duke.edu/djcil/vol5/iss1/1" target="_blank">https://scholarship.law.duke.edu/djcil/vol5/iss1/1</a></li>
+
+      <li>Border Violence Monitoring Network. (n.d.). <em>Hirsi Jamaa and Others v. Italy</em> (Application No. 27765/09). European Court of Human Rights. <a href="https://borderviolence.eu/legal-action/hirsi-jamaa-and-others-v-italy-27765-09" target="_blank">https://borderviolence.eu/legal-action/hirsi-jamaa-and-others-v-italy-27765-09</a></li>
+
+      <li>Carens, J. H. (2013). <em>The ethics of immigration.</em> Oxford University Press. <a href="https://cccct.law.columbia.edu/sites/cccct.law.columbia.edu/files/content/Readings/Carens%20-%20The%20Ethics%20of%20Immigration%20Excerpts.pdf" target="_blank">Columbia Law (Excerpts)</a></li>
+
+      <li>Chetail, V. (2015). Are refugee rights human rights? An unorthodox questioning of the relations between refugee law and human rights law. <em>International Journal of Constitutional Law, 13</em>(2), 551–575. <a href="https://academic.oup.com/icon/article/13/2/551/735746" target="_blank">https://academic.oup.com/icon/article/13/2/551/735746</a></li>
+
+      <li>Council on Foreign Relations. (2026). <em>Power struggle in Sudan.</em> Global Conflict Tracker. <a href="https://www.cfr.org/global-conflict-tracker/conflict/power-struggle-sudan" target="_blank">https://www.cfr.org/global-conflict-tracker/conflict/power-struggle-sudan</a></li>
+
+      <li>Diplomacy and Law. (n.d.). <em>Treaty of Westphalia 1648.</em> <a href="https://www.diplomacyandlaw.com/post/treaty-of-westphalia-1648" target="_blank">https://www.diplomacyandlaw.com/post/treaty-of-westphalia-1648</a></li>
+
+      <li>Drishti IAS. (2025). <em>Sudan civil war.</em> <a href="https://www.drishtiias.com/daily-updates/daily-news-analysis/sudan-civil-war" target="_blank">https://www.drishtiias.com/daily-updates/daily-news-analysis/sudan-civil-war</a></li>
+
+      <li>Encyclopaedia Britannica. (n.d.). <em>Conflict in Darfur.</em> Britannica. <a href="https://www.britannica.com/place/Sudan/Conflict-in-Darfur" target="_blank">https://www.britannica.com/place/Sudan/Conflict-in-Darfur</a></li>
+
+      <li>Goodwin-Gill, G. S. (2011). The right to seek asylum: Interception at sea and the principle of non-refoulement. <em>International Journal of Refugee Law, 23</em>(3), 443–457. <a href="https://doi.org/10.1093/ijrl/eer018" target="_blank">https://doi.org/10.1093/ijrl/eer018</a></li>
+
+      <li>Grahl-Madsen, A. (1966). The status of refugees in international law [Review]. <em>American Journal of International Law, 60</em>(3), 636–638. JSTOR. <a href="https://www.jstor.org/stable/3786774" target="_blank">https://www.jstor.org/stable/3786774</a></li>
+
+      <li>Hathaway, J. C., &amp; Neve, R. A. (1997). Making international refugee law relevant again: A proposal for collectivized and solution-oriented protection. <em>Harvard Human Rights Journal, 10,</em> 115–211. <a href="https://case.edu/law/sites/default/files/2019-12/Making%20International%20Refugee%20Law%20Relevant%20Again_%20A%20Proposal%20for%20C%20%28Hathaway%2C%201997%2C%2098%20p.%29.pdf" target="_blank">Case Western Law PDF</a></li>
+
+      <li>Huang, Y., &amp; Kvasnicka, M. (2019). <em>Immigration and crimes against natives: The 2015 refugee crisis in Germany</em> (IZA Discussion Paper No. 12469). Institute of Labor Economics (IZA). <a href="https://www.jointdatacenter.org/literature_review/immigration-and-crimes-against-natives-the-2015-refugee-crisis-in-germany/" target="_blank">https://www.jointdatacenter.org/literature_review/</a></li>
+
+      <li>Human Rights Watch. (n.d.). <em>Rohingya crisis.</em> Human Rights Watch. <a href="https://www.hrw.org/tag/rohingya-crisis" target="_blank">https://www.hrw.org/tag/rohingya-crisis</a></li>
+
+      <li>International Committee of the Red Cross. (2018). <em>International Review of the Red Cross, 99</em>(1–3) [Special issue: 150 years of humanitarian reflection]. <a href="https://international-review.icrc.org/reviews/irrc-no100-150-years-humanitarian-reflection" target="_blank">https://international-review.icrc.org</a></li>
+
+      <li>Lettevall, R. (2012). Neutrality and humanitarianism. In R. Lettevall, G. Somsen, &amp; S. Widmalm (Eds.), <em>Neutrality in twentieth-century Europe: Intersections of science, culture, and politics after the First World War.</em> Routledge. <a href="https://www.taylorfrancis.com/chapters/edit/10.4324/9780203116791-19/neutrality-humanitarianism-rebecka-lettevall" target="_blank">https://www.taylorfrancis.com</a></li>
+
+      <li>Mahrdt, H. (2017). Rethinking our refugee crisis with Hannah Arendt. <em>Estudos Ibero-Americanos, 43</em>(3), 535–547. <a href="https://www.redalyc.org/pdf/1346/134653657006.pdf" target="_blank">https://www.redalyc.org/pdf/1346/134653657006.pdf</a></li>
+
+      <li>Office of the United Nations High Commissioner for Human Rights (OHCHR). (n.d.). <em>Universal Declaration of Human Rights.</em> <a href="https://www.ohchr.org/en/human-rights/universal-declaration/translations/english" target="_blank">https://www.ohchr.org</a></li>
+
+      <li>Office of the United Nations High Commissioner for Human Rights (OHCHR). (2025, September 19). <em>Sudan crisis deepens amid rising civilian casualties, growing ethnic violence and grim humanitarian situation.</em> <a href="https://www.ohchr.org/en/press-releases/2025/09/sudan-crisis-deepens-amid-rising-civilian-casualties-growing" target="_blank">https://www.ohchr.org</a></li>
+
+      <li>Shachar, A. (2024). Severing the Gordian knot of sovereignty and migration control. <em>American Journal of International Law Unbound.</em> Cambridge University Press. <a href="https://www.cambridge.org/core/journals/american-journal-of-international-law" target="_blank">https://www.cambridge.org/core/journals/american-journal-of-international-law</a></li>
+
+      <li>Spiegel, P., &amp; Golub, G. (2014). Refugees and health: Lessons from World War 1. <em>The Lancet, 384</em>(9958), 1644–1646. <a href="https://doi.org/10.1016/S0140-6736(14)62117-2" target="_blank">https://doi.org/10.1016/S0140-6736(14)62117-2</a></li>
+
+      <li>United Nations. (n.d.). <em>Definitions: Genocide.</em> United Nations Office on Genocide Prevention and the Responsibility to Protect. <a href="https://www.un.org/en/genocide-prevention/definition" target="_blank">https://www.un.org/en/genocide-prevention/definition</a></li>
+
+      <li>United Nations. (n.d.). <em>Sudan humanitarian crisis.</em> United Nations. <a href="https://www.un.org/en/node/227412" target="_blank">https://www.un.org/en/node/227412</a></li>
+
+      <li>United Nations High Commissioner for Refugees (UNHCR). (2024). <em>Mid-year trends 2024.</em> UNHCR. <a href="https://www.unhcr.org/mid-year-trends" target="_blank">https://www.unhcr.org/mid-year-trends</a></li>
+
+      <li>United Nations High Commissioner for Refugees (UNHCR). (2025). <em>Global trends: Forced displacement in 2024.</em> <a href="https://www.unhcr.org/sites/default/files/2025-06/global-trends-report-2024.pdf" target="_blank">https://www.unhcr.org/sites/default/files/2025-06/global-trends-report-2024.pdf</a></li>
+
+      <li>United Nations High Commissioner for Refugees (UNHCR). (n.d.). <em>Rohingya emergency.</em> UNHCR. <a href="https://www.unhcr.org/rohingya-emergency.html" target="_blank">https://www.unhcr.org/rohingya-emergency.html</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <p><strong>The Right to Seek Asylum</strong></p>
+  <p>Vedika Malhotra · Anica Bajju · Akshata Nakarmi</p>
+  <p style="margin-top:.4rem;">Public Policy &amp; Systems — Final Project &nbsp;|&nbsp; All content preserved verbatim from submitted paper</p>
+</footer>
+
+<!-- ── JAVASCRIPT ─────────────────────────────────────────── -->
+<script>
+// ── Tab navigation ──────────────────────────────────────────
+const navTabs = document.querySelectorAll('.nav-tab');
+const sections = document.querySelectorAll('.section');
+
+navTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.section;
+    navTabs.forEach(t => t.classList.remove('active'));
+    sections.forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(target).classList.add('active');
+    window.scrollTo({ top: document.querySelector('.nav-sticky').offsetTop - 2, behavior: 'smooth' });
+  });
+});
+
+// ── Case study tabs ─────────────────────────────────────────
+const caseTabs = document.querySelectorAll('.case-tab');
+const casePanels = document.querySelectorAll('.case-panel');
+
+caseTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.case;
+    caseTabs.forEach(t => t.classList.remove('active'));
+    casePanels.forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('case-' + target).classList.add('active');
+  });
+});
+
+// ── Accordion ───────────────────────────────────────────────
+document.querySelectorAll('.acc-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const content = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('open');
+    // close all
+    document.querySelectorAll('.acc-btn.open').forEach(b => {
+      b.classList.remove('open');
+      b.nextElementSibling.classList.remove('open');
+    });
+    if (!isOpen) {
+      btn.classList.add('open');
+      content.classList.add('open');
+    }
+  });
+});
+
+// ── Progress bar ────────────────────────────────────────────
+const bar = document.getElementById('progress-bar');
+window.addEventListener('scroll', () => {
+  const doc = document.documentElement;
+  const scrolled = (window.scrollY / (doc.scrollHeight - doc.clientHeight)) * 100;
+  bar.style.width = scrolled + '%';
+});
+</script>
+</body>
+</html>
